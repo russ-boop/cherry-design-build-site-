@@ -51,7 +51,7 @@ function db() {
   const call = async (path, opts = {}) => {
     const res = await fetch(`${url}/rest/v1/${path}`, {
       ...opts,
-      headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json", ...(opts.headers || {}) }
+      headers: { apikey: key, ...(key.startsWith("eyJ") ? { Authorization: `Bearer ${key}` } : {}), "Content-Type": "application/json", ...(opts.headers || {}) }
     });
     const text = await res.text();
     if (!res.ok) throw new Error(`Supabase ${res.status}: ${text.slice(0, 300)}`);

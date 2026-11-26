@@ -59,3 +59,9 @@ create trigger projects_ref before insert on projects for each row execute funct
 
 alter table customers enable row level security;
 alter table projects  enable row level security;
+
+-- Only the server's secret key may use these tables (the public anon key gets nothing).
+grant usage on schema public to service_role;
+grant all on table customers, projects to service_role;
+grant usage, select on sequence project_ref_seq to service_role;
+grant usage, select on all sequences in schema public to service_role;
